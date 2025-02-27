@@ -30,5 +30,5 @@ def send_mouse(leftclick, x, y):
 time.sleep(1)
 # Example: Move the mouse by 10px right, 10px down
 send_mouse(1,0, 0)
-
+send_mouse(0,0, 0)
 device.close()

@@ -46,7 +46,7 @@ class Triggerbot:
         self.toggle_lock = threading.Lock()
 
         # Hardcoded config values (These values replace the ones from the JSON)
-        self.keybind_toggle = 0xA0  # Keybind for toggle (Right Shift)
+        self.keybind_toggle = 0x4F  # Keybind for toggle (Right Shift)
         self.always_enabled = False
         self.trigger_delay = 40
         self.base_delay = 0.0168
@@ -83,8 +83,7 @@ class Triggerbot:
             time.sleep(actual_delay)
 
             # Send HID input to Arduino to simulate a click
-            send_mouse(0,
-                       0)  # This could be mouse movement or you could simulate a click, e.g. send a mouse button press here
+            send_mouse(1,0, 0)  # This could be mouse movement or you could simulate a click, e.g. send a mouse button press here
 
             # Beep feedback on action
             print("Triggerbot action - Mouse click simulated")

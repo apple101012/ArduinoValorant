@@ -53,7 +53,8 @@ void loop() {
     RawHID.read();
     x = rawHidData[0];
     y = rawHidData[1];
-    fakelmb = rawHidData[2];
+    lmb = rawHidData[2];
+
     RawHID.enable();  // Flush data
   } else {
     x = dx;  // Use USB mouse input
