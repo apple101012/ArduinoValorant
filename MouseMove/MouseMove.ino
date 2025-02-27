@@ -100,6 +100,7 @@ void setup() {
 }
 
 void loop() {
+  
     dx = 0;
     dy = 0;
     dz = 0;

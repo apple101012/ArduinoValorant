@@ -5,7 +5,7 @@ uint8_t rawHidData[64];  // Adjusted size for raw HID data.
 void setup() {
   Mouse.begin();
   RawHID.begin(rawHidData, sizeof(rawHidData));  // Start RawHID with data size
-  Serial.begin(9600);  // For debugging, print incoming HID data
+//  Serial.begin(9600);  // For debugging, print incoming HID data
 }
 
 void loop() {
@@ -19,10 +19,10 @@ void loop() {
 
     // Debugging: Print the raw HID data for analysis
     Serial.print("Raw HID Data: ");
-    Serial.print("X: ");
-    Serial.print(x);
-    Serial.print(" Y: ");
-    Serial.println(y);
+//    Serial.print("X: ");
+//    Serial.print(x);
+//    Serial.print(" Y: ");
+//    Serial.println(y);
 
     // Move the mouse based on the received x, y values
     Mouse.move(x, y);
