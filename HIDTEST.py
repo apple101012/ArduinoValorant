@@ -16,15 +16,15 @@ def unsign(value):
     """Ensure values are treated as unsigned 8-bit integers"""
     return value & 0xFF
 
-def send_mouse(buttons, x, y):
-    """Send HID mouse movement and button press data to Arduino"""
+def send_mouse(x, y):
+    """Send HID mouse movement data to Arduino"""
     x = unsign(x)
     y = unsign(y)
-    report = [buttons, x, y]
+    report = [0, x, y]  # Button is 0 (no buttons pressed), x and y are the movement values
     print(f"Sending: {report}")
     device.write(report)
 
-# Example: Click and move 10px right, 10px down
-send_mouse(0, 0, 5)
+# Example: Move the mouse by 10px right, 10px down
+send_mouse(10, 100)
 
 device.close()
