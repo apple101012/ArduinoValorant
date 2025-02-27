@@ -111,13 +111,15 @@ void MouseRptParser::OnXB2ButtonDown (MOUSEINFO *mi) {
 MouseRptParser  Prs; 
 
 void setup() {
-  delay(5000); 
-  Mouse.begin(); 
-  Serial.begin(115200); 
+  Serial.begin(115200);
+  while (!Serial && millis() < 5000);  // Wait up to 5 seconds for Serial (if available)
 
-  Usb.Init(); 
-  HidMouse.SetReportParser(0, &Prs); 
-} 
+  Mouse.begin();
+  Usb.Init();
+  HidMouse.SetReportParser(0, &Prs);
+
+  Serial.println("USB Mouse Ready!");
+}
 
 
 void loop() {
