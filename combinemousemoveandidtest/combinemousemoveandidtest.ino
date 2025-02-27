@@ -9,6 +9,7 @@ HIDBoot<USB_HID_PROTOCOL_MOUSE> HidMouse(&Usb);
 
 int8_t dx = 0, dy = 0, dz = 0;  // Mouse movement and scroll variables
 int lmb = 0, rmb = 0, mmb = 0, xb1 = 0, xb2 = 0;  // Mouse button states
+int fakelmb = 0;
 
 class MouseParser : public MouseReportParser {
   protected:
@@ -52,10 +53,7 @@ void loop() {
     RawHID.read();
     x = rawHidData[0];
     y = rawHidData[1];
-    scroll = rawHidData[2];  // Scroll value
-    lmb = rawHidData[3] & 1;
-    rmb = (rawHidData[3] >> 1) & 1;
-    mmb = (rawHidData[3] >> 2) & 1;
+    fakelmb = rawHidData[2];
     RawHID.enable();  // Flush data
   } else {
     x = dx;  // Use USB mouse input
@@ -68,7 +66,12 @@ void loop() {
   dx = 0;
   dy = 0;
   dz = 0;
-
+  if (fakelmb == 0) { Mouse.release(MOUSE_LEFT); } else { 
+    Mouse.press(MOUSE_LEFT);
+    delay(10);
+    Mouse.release(MOUSE_LEFT);
+    fakelmb = 0;
+    }
   // Handle button presses
   if (lmb == 0) { Mouse.release(MOUSE_LEFT); } else { Mouse.press(MOUSE_LEFT); }
   if (rmb == 0) { Mouse.release(MOUSE_RIGHT); } else { Mouse.press(MOUSE_RIGHT); }

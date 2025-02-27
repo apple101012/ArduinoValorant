@@ -50,6 +50,7 @@ def move_mouse_to(x_target, y_target, delay=0.05):
 
     print("Movement complete!")
 
+time.sleep(3)
 # Example: Move the mouse gradually to (100, 100)
 move_mouse_to(100, 100, delay=0.05)
 
