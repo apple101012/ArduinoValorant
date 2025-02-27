@@ -83,6 +83,10 @@ protected:
 
         virtual void OnMiddleButtonDown(MOUSEINFO *mi __attribute__((unused))) {
         };
+		 virtual void OnXB1ButtonUp(MOUSEINFO *mi);
+		virtual void OnXB1ButtonDown(MOUSEINFO *mi);
+		virtual void OnXB2ButtonUp(MOUSEINFO *mi);
+		virtual void OnXB2ButtonDown(MOUSEINFO *mi);
 };
 
 struct MODIFIERKEYS {
