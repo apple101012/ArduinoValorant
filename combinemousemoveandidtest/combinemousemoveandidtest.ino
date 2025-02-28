@@ -1,6 +1,7 @@
 #include <HID-Project.h>
 #include <Usb.h>
 #include <hidboot.h>
+#include <Mouse.h>
 
 uint8_t rawHidData[64];  // Buffer for incoming Raw HID data.
 
@@ -61,7 +62,7 @@ void loop() {
   } else {
     x = dx;  // Use USB mouse input
     y = dy;
-    scroll = 0;
+    scroll = dz;
   }
 
   // Move mouse
