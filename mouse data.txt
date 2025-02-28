@@ -1,0 +1,10 @@
+left click 1 0 0 0 0 0 0 0 
+right click 2 0 0 0 0 0 0 0 
+xbutton 2 (front button) Buffer: 10 0 0 0 0 0 0 0 
+xbutton1 (back button)  8 0 0 0 0 0 0 0 
+right bunch of pixel but not 127 0 7F 0 0 46 0 0 0 
+left 1 pixel 0 FF 0 0 FF FF 0 0 
+up one pixel 0 0 FF 0 0 0 FF FF 
+down one pixel 0 0 1 0 0 0 1 0 
+down bunch of pixels but not 127 0 0 7F 0 0 0 25 0 
+
