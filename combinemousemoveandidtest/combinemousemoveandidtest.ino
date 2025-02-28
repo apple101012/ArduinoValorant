@@ -56,7 +56,7 @@ void loop() {
   } else {
     x = dx;  // Use USB mouse input
     y = dy;
-    scroll = dz;
+    scroll = 0;
   }
 
   // Move mouse
