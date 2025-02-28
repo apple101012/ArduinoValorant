@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2021 NicoHood
+Copyright (c) 2014-2015 NicoHood
 See the readme for credit to other people.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,33 +24,68 @@ THE SOFTWARE.
 // Include guard
 #pragma once
 
-// Software version
-#define HID_PROJECT_VERSION 284
+MouseAPI::MouseAPI(void) : _buttons(0)
+{
+	// Empty
+}
 
-#if ARDUINO < 10607
-#error HID Project requires Arduino IDE 1.6.7 or greater. Please update your IDE.
-#endif
+void MouseAPI::begin(void)
+{
+    end();
+}
 
-#if !defined(USBCON)
-#error HID Project can only be used with an USB MCU.
-#endif
+void MouseAPI::end(void)
+{
+    _buttons = 0;
+    move(0, 0, 0);
+}
 
-// Include all HID libraries (.a linkage required to work) properly
-#include "SingleReport/SingleAbsoluteMouse.h"
-#include "MultiReport/AbsoluteMouse.h"
-#include "SingleReport/BootMouse.h"
-#include "MultiReport/ImprovedMouse.h"
-#include "SingleReport/SingleConsumer.h"
-#include "MultiReport/Consumer.h"
-#include "SingleReport/SingleGamepad.h"
-#include "MultiReport/Gamepad.h"
-#include "SingleReport/SingleSystem.h"
-#include "MultiReport/System.h"
-#include "SingleReport/RawHID.h"
-#include "SingleReport/BootKeyboard.h"
-#include "MultiReport/ImprovedKeyboard.h"
-#include "SingleReport/SingleNKROKeyboard.h"
-#include "MultiReport/NKROKeyboard.h"
-#include "MultiReport/SurfaceDial.h"
+void MouseAPI::click(uint8_t b)
+{
+	_buttons = b;
+	move(0,0,0);
+	_buttons = 0;
+	move(0,0,0);
+}
 
-// Include Teensy HID afterwards to overwrite key definitions if used
+void MouseAPI::move(signed char x, signed char y, signed char wheel)
+{
+	HID_MouseReport_Data_t report;
+	report.buttons = _buttons;
+	report.xAxis = x;
+	report.yAxis = y;
+	report.wheel = wheel;
+	SendReport(&report, sizeof(report));
+}
+
+void MouseAPI::buttons(uint8_t b)
+{
+	if (b != _buttons)
+	{
+		_buttons = b;
+		move(0,0,0);
+	}
+}
+
+void MouseAPI::press(uint8_t b)
+{
+	buttons(_buttons | b);
+}
+
+void MouseAPI::release(uint8_t b)
+{
+	buttons(_buttons & ~b);
+}
+
+void MouseAPI::releaseAll(void)
+{
+  _buttons = 0;
+	move(0,0,0);
+}
+
+bool MouseAPI::isPressed(uint8_t b)
+{
+	if ((b & _buttons) > 0)
+		return true;
+	return false;
+}
