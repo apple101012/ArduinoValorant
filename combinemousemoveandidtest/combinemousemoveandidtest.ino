@@ -7,6 +7,11 @@ uint8_t rawHidData[64];  // Buffer for incoming Raw HID data.
 USB Usb;
 HIDBoot<USB_HID_PROTOCOL_MOUSE> HidMouse(&Usb);
 
+const uint8_t encryption_key = 0x55;  // Same XOR key as Python
+uint8_t xor_decrypt(uint8_t value) {
+    return value ^ encryption_key;
+}
+
 int8_t dx = 0, dy = 0, dz = 0;  // Mouse movement and scroll variables
 int lmb = 0, rmb = 0, mmb = 0, xb1 = 0, xb2 = 0;  // Mouse button states
 
@@ -50,9 +55,9 @@ void loop() {
 
   if (RawHID.available()) {
     RawHID.read();
-    x = rawHidData[0];
-    y = rawHidData[1];
-    RawHID.enable();  // Flush data
+    x = xor_decrypt(rawHidData[0]);  // Decrypt x using XOR
+    y = xor_decrypt(rawHidData[1]);  // Decrypt y using XOR
+    RawHID.enable();
   } else {
     x = dx;  // Use USB mouse input
     y = dy;

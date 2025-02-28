@@ -21,7 +21,7 @@ class bob:
         self.y_speed = 0.5    #0.5
         self.x_only = False
         self.custom_yoffset = 0
-
+        self.encryption_key = 0x55
         # USB HID setup for Arduino
         self.VENDOR_ID = 0x2341
         self.PRODUCT_ID = 0x8036
@@ -65,14 +65,24 @@ class bob:
         if self.custom_yoffset != 0:
             self.cop_ready = self.custom_yoffset
 
+    def xor_encrypt(self, value):
+        return (value ^ self.encryption_key) & 0xFF
+    # def send_mouse(self, leftclick, x, y):
+    #     """Send HID mouse movement data to Arduino"""
+    #     leftclick = leftclick & 0xFF
+    #     x = x & 0xFF
+    #     y = y & 0xFF
+    #     report = [0, x, y]
+    #     # report = [0, x, y, leftclick]  # Button is 0 (no buttons pressed), x and y are the movement values
+    #     print(f"Sending: {report}")
+    #     self.device.write(report)
     def send_mouse(self, leftclick, x, y):
-        """Send HID mouse movement data to Arduino"""
+        """Send HID mouse movement data to Arduino with XOR encryption"""
         leftclick = leftclick & 0xFF
-        x = x & 0xFF
-        y = y & 0xFF
+        x = self.xor_encrypt(x)  # Encrypt x with XOR
+        y = self.xor_encrypt(y)  # Encrypt y with XOR
         report = [0, x, y]
-        # report = [0, x, y, leftclick]  # Button is 0 (no buttons pressed), x and y are the movement values
-        print(f"Sending: {report}")
+        print(f"Sending encrypted: {report}")
         self.device.write(report)
 
     def run(self):
