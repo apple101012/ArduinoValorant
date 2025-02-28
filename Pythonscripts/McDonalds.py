@@ -84,7 +84,7 @@ class Triggerbot:
 
             # Send HID input to Arduino to simulate a click
             send_mouse(1,0, 0)  # This could be mouse movement or you could simulate a click, e.g. send a mouse button press here
-
+            send_mouse(0, 0, 0)
             # Beep feedback on action
             print("Triggerbot action - Mouse click simulated")
             time.sleep(0.005)

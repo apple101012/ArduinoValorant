@@ -67,12 +67,6 @@ void loop() {
   dx = 0;
   dy = 0;
   dz = 0;
-  if (fakelmb == 0) { Mouse.release(MOUSE_LEFT); } else { 
-    Mouse.press(MOUSE_LEFT);
-    delay(10);
-    Mouse.release(MOUSE_LEFT);
-    fakelmb = 0;
-    }
   // Handle button presses
   if (lmb == 0) { Mouse.release(MOUSE_LEFT); } else { Mouse.press(MOUSE_LEFT); }
   if (rmb == 0) { Mouse.release(MOUSE_RIGHT); } else { Mouse.press(MOUSE_RIGHT); }
