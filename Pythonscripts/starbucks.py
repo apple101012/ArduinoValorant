@@ -5,20 +5,20 @@ import win32api
 import hid
 from mss import mss
 
-class aimbot:
+class bob:
     def __init__(self):
         self.sct = mss()
 
         # Hardcoded config values
-        self.aimbot_hotkey = 0xA0  # Shift key (left)
+        self.aimbot_hotkey = 0x46  # Shift key (left) 0xA0
         self.experimental_filtering = False
         self.anti_astra = False
         self.enable_rcs = False
-        self.x_fov = 41
-        self.y_fov = 30
+        self.x_fov = 41  #41
+        self.y_fov = 30  #30
         self.cop = 1
-        self.x_speed = 0.44
-        self.y_speed = 0.5
+        self.x_speed = 0.44   #0.44
+        self.y_speed = 0.5    #0.5
         self.x_only = False
         self.custom_yoffset = 0
 
@@ -78,6 +78,7 @@ class aimbot:
     def run(self):
         """Main aimbot loop"""
         if win32api.GetAsyncKeyState(self.aimbot_hotkey) < 0:
+            print("errr")
             # Take screenshot
             img = np.array(self.sct.grab(self.screenshot))
             hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -118,5 +119,5 @@ class aimbot:
         finally:
             self.device.close()  # Close HID device on exit
 
-bot = aimbot()
+bot = bob()
 bot.starterino()
