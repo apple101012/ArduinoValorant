@@ -27,7 +27,7 @@ def send_mouse(leftclick, x, y):
     print(f"Sending: {report}")
     device.write(report)
 
-time.sleep(1)
+time.sleep(3)
 # Example: Move the mouse by 10px right, 10px down
 send_mouse(1,0, 0)
 send_mouse(0,0, 0)

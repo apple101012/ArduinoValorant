@@ -53,7 +53,7 @@ void loop() {
     RawHID.read();
     x = rawHidData[0];
     y = rawHidData[1];
-    lmb = rawHidData[2];
+//   lmb = rawHidData[2];
 
     RawHID.enable();  // Flush data
   } else {

@@ -47,12 +47,12 @@ class Triggerbot:
 
         # Hardcoded config values (These values replace the ones from the JSON)
         self.keybind_toggle = 0x4F  # Keybind for toggle (Right Shift)
-        self.always_enabled = False
-        self.trigger_delay = 40
-        self.base_delay = 0.0168
-        self.color_tolerance = 70
+        self.always_enabled = True
+        self.trigger_delay = 10
+        self.base_delay = 0.001
+        self.color_tolerance = 10
         self.monitor_id = 1  # Monitor to capture from
-        self.R, self.G, self.B = (250, 100, 250)  # Purple color
+        self.R, self.G, self.B = (148, 154, 194)  # Purple color
         self.screenshot = self.sct.monitors[self.monitor_id]
 
     def cooldown(self):
@@ -84,6 +84,7 @@ class Triggerbot:
 
             # Send HID input to Arduino to simulate a click
             send_mouse(1,0, 0)  # This could be mouse movement or you could simulate a click, e.g. send a mouse button press here
+            time.sleep(0.1)
             send_mouse(0, 0, 0)
             # Beep feedback on action
             print("Triggerbot action - Mouse click simulated")
