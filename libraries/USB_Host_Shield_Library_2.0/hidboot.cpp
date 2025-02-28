@@ -17,9 +17,10 @@ e-mail   :  support@circuitsathome.com
 
 #include "hidboot.h"
 
-void MouseReportParser::Parse(USBHID *hid __attribute__((unused)), bool is_rpt_id __attribute__((unused)), uint8_t len __attribute__((unused)), uint8_t *buf) {
+void MouseReportParser::Parse(USBHID *hid __attribute__((unused)), bool is_rpt_id __attribute__((unused)), uint8_t len, uint8_t *buf) {
     MOUSEINFO *pmi = (MOUSEINFO*)buf;
 
+    // Handle left button
     if (prevState.mouseInfo.bmLeftButton != pmi->bmLeftButton) {
         if (pmi->bmLeftButton) {
             OnLeftButtonDown(pmi);
@@ -28,6 +29,7 @@ void MouseReportParser::Parse(USBHID *hid __attribute__((unused)), bool is_rpt_i
         }
     }
 
+    // Handle right button
     if (prevState.mouseInfo.bmRightButton != pmi->bmRightButton) {
         if (pmi->bmRightButton) {
             OnRightButtonDown(pmi);
@@ -36,6 +38,7 @@ void MouseReportParser::Parse(USBHID *hid __attribute__((unused)), bool is_rpt_i
         }
     }
 
+    // Handle middle button
     if (prevState.mouseInfo.bmMiddleButton != pmi->bmMiddleButton) {
         if (pmi->bmMiddleButton) {
             OnMiddleButtonDown(pmi);
@@ -44,7 +47,7 @@ void MouseReportParser::Parse(USBHID *hid __attribute__((unused)), bool is_rpt_i
         }
     }
 
-    // Handle the extra mouse buttons (Side buttons)
+    // Handle extra buttons (XButton1, XButton2)
     if (prevState.mouseInfo.bmXButton1 != pmi->bmXButton1) {
         if (pmi->bmXButton1) {
             OnXB1ButtonDown(pmi);
@@ -62,13 +65,27 @@ void MouseReportParser::Parse(USBHID *hid __attribute__((unused)), bool is_rpt_i
     }
 
     // Handle mouse movement
+    int16_t moveX = (int8_t)buf[1];  // Read first byte of X movement
+    int16_t moveY = (int8_t)buf[2];  // Read first byte of Y movement
+
+    // Check for extended movement range
+    if (len > 4) {
+        moveX |= ((int8_t)buf[4] << 8);  // Read second byte if available
+        moveY |= ((int8_t)buf[5] << 8);  // Read second byte if available
+    }
+
+    // Assign movement data
+    pmi->dX = moveX;
+    pmi->dY = moveY;
+
     if (pmi->dX || pmi->dY) {
         OnMouseMove(pmi);
     }
 
     // Update previous state
-    prevState.bInfo[0] = buf[0];
+    memcpy(&prevState.mouseInfo, pmi, sizeof(MOUSEINFO));
 }
+
 
 void KeyboardReportParser::Parse(USBHID *hid, bool is_rpt_id __attribute__((unused)), uint8_t len __attribute__((unused)), uint8_t *buf) {
     // On error - return
@@ -140,19 +157,3 @@ uint8_t KeyboardReportParser::OemToAscii(uint8_t mod, uint8_t key) {
     return (0);
 }
 
-// Added functions for extra mouse buttons
-void MouseReportParser::OnXB1ButtonDown(MOUSEINFO *mi) {
-    Serial.println("XButton1 Pressed");
-}
-
-void MouseReportParser::OnXB1ButtonUp(MOUSEINFO *mi) {
-    Serial.println("XButton1 Released");
-}
-
-void MouseReportParser::OnXB2ButtonDown(MOUSEINFO *mi) {
-    Serial.println("XButton2 Pressed");
-}
-
-void MouseReportParser::OnXB2ButtonUp(MOUSEINFO *mi) {
-    Serial.println("XButton2 Released");
-}

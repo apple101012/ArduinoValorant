@@ -9,7 +9,6 @@ HIDBoot<USB_HID_PROTOCOL_MOUSE> HidMouse(&Usb);
 
 int8_t dx = 0, dy = 0, dz = 0;  // Mouse movement and scroll variables
 int lmb = 0, rmb = 0, mmb = 0, xb1 = 0, xb2 = 0;  // Mouse button states
-int fakelmb = 0;
 
 class MouseParser : public MouseReportParser {
   protected:
@@ -42,8 +41,6 @@ void setup() {
   RawHID.begin(rawHidData, sizeof(rawHidData));  // Start RawHID
   Usb.Init();  // Initialize USB Host
   HidMouse.SetReportParser(0, &mouseParser);
-//
-//  Serial.begin(115200);
 }
 
 void loop() {
@@ -55,8 +52,6 @@ void loop() {
     RawHID.read();
     x = rawHidData[0];
     y = rawHidData[1];
-//   lmb = rawHidData[2];
-
     RawHID.enable();  // Flush data
   } else {
     x = dx;  // Use USB mouse input
@@ -66,14 +61,16 @@ void loop() {
 
   // Move mouse
   Mouse.move(x, y, scroll);
-//  Serial.print("x: "); Serial.println(dz);
-  x = 0;
-  y = 0;
+
+  // Reset movement values
   dx = 0;
   dy = 0;
   dz = 0;
+
   // Handle button presses
-  if (lmb == 0) { Mouse.release(MOUSE_LEFT); } else { Mouse.press(MOUSE_LEFT); }
-  if (rmb == 0) { Mouse.release(MOUSE_RIGHT); } else { Mouse.press(MOUSE_RIGHT); }
-  if (mmb == 0) { Mouse.release(MOUSE_MIDDLE); } else { Mouse.press(MOUSE_MIDDLE); }
+  if (lmb) Mouse.press(MOUSE_LEFT); else Mouse.release(MOUSE_LEFT);
+  if (rmb) Mouse.press(MOUSE_RIGHT); else Mouse.release(MOUSE_RIGHT);
+  if (mmb) Mouse.press(MOUSE_MIDDLE); else Mouse.release(MOUSE_MIDDLE);
+  if (xb1) Mouse.press(0x08); else Mouse.release(0x08); // XButton1 (Back Button)
+  if (xb2) Mouse.press(0x10); else Mouse.release(0x10); // XButton2 (Forward Button)
 }
