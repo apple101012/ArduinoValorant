@@ -145,6 +145,4 @@ void loop() {
     } else if (xb2 == 1) {
         Mouse.press(MOUSE_XB2);
     }
-
-    delay(10); // Optional: to avoid CPU overuse, adjust as necessary
 }

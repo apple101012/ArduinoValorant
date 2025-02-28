@@ -42,6 +42,8 @@ void setup() {
   RawHID.begin(rawHidData, sizeof(rawHidData));  // Start RawHID
   Usb.Init();  // Initialize USB Host
   HidMouse.SetReportParser(0, &mouseParser);
+//
+//  Serial.begin(115200);
 }
 
 void loop() {
@@ -53,17 +55,20 @@ void loop() {
     RawHID.read();
     x = rawHidData[0];
     y = rawHidData[1];
-//   lmb = rawHidData[2];
+   lmb = rawHidData[2];
 
     RawHID.enable();  // Flush data
   } else {
     x = dx;  // Use USB mouse input
     y = dy;
-    scroll = dz;
+    scroll = 0;
   }
 
   // Move mouse
   Mouse.move(x, y, scroll);
+//  Serial.print("x: "); Serial.println(dz);
+  x = 0;
+  y = 0;
   dx = 0;
   dy = 0;
   dz = 0;
