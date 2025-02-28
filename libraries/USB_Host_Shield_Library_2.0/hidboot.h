@@ -38,17 +38,17 @@ e-mail   :  support@circuitsathome.com
 
 struct MOUSEINFO {
  
-typedef struct {
-  uint8_t buttons;  // Left (1), Right (2), XButton1 (8), XButton2 (10)
-  int8_t x;         // X movement (-127 to 127)
-  int8_t y;         // Y movement (-127 to 127)
-  int8_t wheel;     // Vertical scroll (-127 to 127)
-  uint8_t extra1;   // Possibly for DPI or horizontal scroll
-  uint8_t extra2;   // Additional mouse data (e.g., high-res movement)
-  uint8_t extra3;
-  uint8_t extra4;
-} MouseReport_t;
-
+		struct {
+				uint8_t bmLeftButton : 1;
+				uint8_t bmRightButton : 1;
+				uint8_t bmMiddleButton : 1;
+				uint8_t bmXButton1 : 1;
+				uint8_t bmXButton2 : 1;
+				uint8_t bmDummy : 3;
+		};
+		int8_t dX;
+		int8_t dY;
+		int8_t dZ;
 };
 
 class MouseReportParser : public HIDReportParser {
