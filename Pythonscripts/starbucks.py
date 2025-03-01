@@ -23,8 +23,8 @@ class bob:
         self.custom_yoffset = 0
         self.encryption_key = 0x55
         # USB HID setup for Arduino
-        self.VENDOR_ID = 0x2341
-        self.PRODUCT_ID = 0x8036
+        self.VENDOR_ID = 0x1532
+        self.PRODUCT_ID = 0x008A
         try:
             self.device = hid.device()
             self.device.open(self.VENDOR_ID, self.PRODUCT_ID)
